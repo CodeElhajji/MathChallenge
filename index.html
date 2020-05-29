@@ -13,83 +13,107 @@
 
     <title>Math</title>
 </head>
-<div id="app">
-    <nav class="container">
-        <ul class=" list-group">
-            <li class="list-group-item text-center">
-                <h1>Match chalange</h1>
-            </li>
-            <li class="border border-white list-group-item text-center d-flex justify-content-around">
-                <h3 class="text-danger">Level : <strong>1</strong></h3>
-                <h3 class="text-info">Joueur : elhajji</h3>
-            </li>
-        </ul>
-    </nav>
-    <section class="container">
-        <form>
+
+<body>
+    <div id="app">
+        <div class="text-center">
+            <h1>Math chalange</h1>
+        </div>
+        <!--  -->
+        <nav v-if="palyername == ''" class="d-flex align-items-center" style="height: 80vh;">
+            <div class="w-50 mx-auto">
+                <label class="">Votre Nom : </label>
+                <input type="text" class=" bg-danger form-control" v-model="inputpalyername">
+                <!--  -->
+                <div v-if="alertrequared == true" class="alert alert-danger mt-2" role="alert">
+                    <small>entrer votre nom</small>
+                </div>
+                <!--  -->
+                <button @click="startgame()" class="btn btn-danger btn-block mt-2 fixed-bottom p-3"><i
+                        class="fas fa-play"></i> Start</button>
+            </div>
+        </nav>
+        <!--  -->
+        <nav v-if="palyername !=  ''" class="">
+            <ul class=" list-group">
+                <li class=" text-center d-flex justify-content-around mt-4">
+                    <h3 class="text-danger">Level : <strong>{{level}}</strong></h3>
+                    <h3 class="text-info">Player : {{palyername}}</h3>
+                </li>
+            </ul>
+        </nav>
+        <section v-if="palyername != ''" class="container mt-4">
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <h1 class="bnt btn-danger text-center">13</h1>
+                        <h1 class="bnt btn-danger text-center">{{Fnumber}}</h1>
                     </div>
                     <div class="col">
-                        <h1 class="bnt btn-dark text-center">+</h1>
+                        <h1 class="bnt btn-dark text-center">{{mathtype}}</h1>
                     </div>
                     <div class="col">
-                        <h1 class="bnt btn-success text-center">27</h1>
+                        <h1 class="bnt btn-success text-center">{{snumber}}</h1>
                     </div>
-                    <div class="w-100 mt-5"></div>
+                    <div class="w-100 mt-2"></div>
                     <div class="col">
                         <h1 class="bnt btn-dark text-center">=</h1>
                     </div>
-                    <div class="w-100 mt-5"></div>
-                    <div class="col-6   "><input type="number" placeholder="??????" class="form-control bg-info  ">
+                    <div class="w-100 mt-2"></div>
+                    <div class="col-6   "><input V-model="inputvalue" type="number" placeholder="Votre reponce"
+                            class="form-control  ">
                     </div>
-                    <div class="col-6 text-center"><button type="submit" class="btn btn-primary btn-block"><i
-                                class="fas fa-calculator"></i> Calculer</button>
+                    <!-- buttons start -->
+                    <div class="col-6 text-center">
+                        <button @click="chekinput" type="submit" class="btn btn-primary btn-block"><i
+                                class="fas fa-calculator"></i>
+                            Calculer</button>
                     </div>
                 </div>
             </div>
-        </form>
-        <!-- bravo -->
-        <div class="container shadow-lg mt-5">
-            <div class="row">
-                <div class="col-6 card bg-white">
-                    <img class="w-100" src="img/bravo.png" alt="result">
-                </div>
-                <div class="col-6 card bg-white">
-                    <p class="text-info text-center"> Bravo : </p>
-                    <p> - votre reponce [33] et cottect </p>
-                    <p> - bravo ollah</p>
-                </div>
-            </div>
-        </div>
-        <!-- end bravo -->
-        <!-- opps -->
-        <div class="container shadow-lg mt-5">
-            <div class="row">
-                <div class="col-6 card bg-white">
-                    <img class="w-100" src="img/oops.png" alt="result">
-                </div>
-                <div class="col-6 card bg-white">
-                    <p class="text-info text-center"> Pfff : </p>
-                    <p> - votre reponce [33] et incottect </p>
-                    <p> - 9ari fi Z7aam?</p>
+            <form class="col-12 text-center mt-2">
+                <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sync"></i>
+                    replay</button>
+            </form>
+            <!--end buttons -->
+            <!-- bravo -->
+            <div v-show="alerttrue" class="container shadow-lg mt-4">
+                <div class="row">
+                    <div class="col-6 card bg-success ">
+                        <img class="w-100" src="img/bravo.png" alt="result">
+                    </div>
+                    <div class="col-6 card bg-success ">
+                        <h3 class="text-danger text-center"> Bravo : </h3>
+                        <p> - réponce : <strong class="text-danger">{{userrepence}} </strong> </p>
+                        <p> - bravo {{palyername}} </p>
+                        <p> - mazal 3andek {{Chanse}} mo7awalat !</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- end opps -->
-    </section>
-    <footer class="container">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <p class="navbar-brand mx-auto">powered by : elhjji abdeljabar</p>
+            <!-- end bravo -->
+            <!-- opps -->
+            <div v-show="alertfalse" class="container shadow-lg mt-4">
+                <div class="row">
+                    <div class="col-6 card bg-warning">
+                        <img class="w-100" src="img/oops.png" alt="result">
+                    </div>
+                    <div class="col-6 card bg-warning">
+                        <h3 class="text-info text-center"> False : </h3>
+                        <p> -votre réponce: <strong class="text-danger"> {{inputvalue}} </strong></p>
+                        <!-- <p> -vrai réponce :<strong class="text-danger"> {{Fnumber * snumber}}</strong></p> -->
+                        <p> - mazal 3andek {{Chanse}} mo7awalat !</p>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </footer>
-</div>
-
-<body>
+            <!-- end opps -->
+        </section>
+        <footer v-if="palyername != ''" class="container bg-info fixed-bottom">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <p class="navbar-brand mx-auto">Powered by : elhajji abdeljabar</p>
+                </div>
+            </nav>
+        </footer>
+    </div>
     <script src="vue.js"></script>
     <script src="vuecode.js"></script>
 </body>
